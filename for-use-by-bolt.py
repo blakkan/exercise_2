@@ -11,6 +11,7 @@ try:
   conn = psycopg2.connect(database="Tcount", user="postgres", password="pass", host="localhost", port="5432")
 except:
   print "Could not connect to the database.  I blame society."
+  exit()
 
 cur = conn.cursor()
 
