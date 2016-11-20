@@ -1,29 +1,43 @@
+#
+# histogram.py
+#
+#   Given two integers (from the command line), retuans all the words for which have 
+# occurance counts between the two integers (inclusive)
+#
+
 import sys
 import re
 import psycopg2
 
 
-# Do some very simple command-line argument validation
+# Do some very simple command-line argument validation; we need to get two integers
+
 print sys.argv
 
 if len(sys.argv) == 3: #space separated
-    low_number = int(sys.argv[1])
-    high_number = int(sys.argv[2])
+    low_number_string = sys.argv[1].replace(",", "")
+    high_number_string = sys.argv[2]
+elif len(sys.argv) == 2:
+    low_number_string, high_number_string = sys.argv[1].rsplit(",", 2)
 else:
-    print "Usage: %s [number number]"
+    print "Usage: %s [number number] or [number,number]"
     exit()
 
-if ( low_number > high_number ):
+low_number = low_number_string.strip()
+high_number = high_number_string.strip()
+
+if (not low_number.isdigit()) or (not high_number.isdigit()):
+    print "Arguments must be numeric"
+    exit()
+
+
+if ( int(low_number) > int(high_number) ):
     print "First number cannot exceed second number"
     exit()
 
-# Do just a little more, just to prevent somebody from easily doing any sql injection...
-##  There are better ways to do this (and that pesky single quote is currently permitted here)
-new_word = re.sub(r'[\;\"\,\)\(]', '', the_word)
-
-if the_word != new_word:
-    print "I won't let you try that word.  I would be willing to let you try %s" % new_word
-    exit()
+#
+# Connect to the database or die in the attempt.
+#
 
 try:
   conn = psycopg2.connect(database="Tcount", user="postgres", password="pass", host="localhost", port="5432")
@@ -33,8 +47,9 @@ except:
 cur = conn.cursor()
 
 #could use "like" instead of = here, if we wanted to permit sql regex matching...
-sql_command = '''SELECT word, count FROM "Tweetwordcount" WHERE word = '%s'; ''' % new_word
+sql_command = '''SELECT word, count FROM "Tweetwordcount" WHERE count >= %s AND count <= %s ORDER BY count DESC, word ASC''' % (low_number, high_number)
 
 cur.execute(sql_command)
 records = cur.fetchall()
-print '''Total number of occurences of "%s": %d''' % ( new_word, len(records) )
+for line in records:
+    print "%20s: %d" % (line[0], line[1])   #turn the list of two items back into a tuple, for strict conformance
