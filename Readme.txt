@@ -5,9 +5,13 @@ Step 0:
 This assumes they python psycopg2 module has already been installed with pip.
 The authorization keys for twitter are already established, and saved in the
 appropriate file in the project, so nothing need be set up with respect to 
-twitter.  If you don't have it, do this:
+twitter.  If you don't have it, do this: (as root)
 
 $pip install psycopg2
+
+You also need tweepy.  If you don't have it, do this: (as root)
+
+$pip install tweepy
 
 
 Step 1:
@@ -17,7 +21,7 @@ From the project's main directory, setup the database (and table) with this comm
 and the table).  This command will remove any existing database before re-creating
 it, so only run it if you no longer need (or have otherwise kept) your own data.
 
-$python create-database.sh
+$./create-database.sh
 
 
 
