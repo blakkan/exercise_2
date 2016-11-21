@@ -1,5 +1,15 @@
 To run the application:
 
+Step 0:
+
+This assumes they python psycopg2 module has already been installed with pip.
+The authorization keys for twitter are already established, and saved in the
+appropriate file in the project, so nothing need be set up with respect to 
+twitter.  If you don't have it, do this:
+
+$pip install psycopg2
+
+
 Step 1:
 
 From the project's main directory, setup the database (and table) with this command.
@@ -24,7 +34,10 @@ Step 3:
 
 Start the streamparse application with the following command.  Note that the 
 streamparse application will run until halted with a "control-c."  I typically let
-it run for about 5 minutes.
+it run for about 5 minutes.  My design does not (by design) include a fixed timer.
+So control-c to stop it (or send a kill signal) when you have enough data.
+I use the topp20tocsv.py script running in a separate ssh session to
+ monitor it as it runs, and use that to decide when I have sufficient data.
 
 $sparse run
 
@@ -81,7 +94,11 @@ F) The config file has the number of parallel spouts and bolts indicated in the 
 admittedly does not use stream id's and/or directed streams to exactly match the streams in
 the figure.
 
-G) I do most of my development for the class (from about the 6th week) by mounting the EC2
+G) We have a rather old version of postgres in our class AMIs (8.4).  It doesn't support the
+"Upsert" (i.e. update or insert) operation supported in the 9-series.  I added a function providing
+this capability to the count bolt.
+
+H) I do most of my development for the class (from about the 6th week) by mounting the EC2
 file system on my local ubuntu machine, then using gedit (and atom) editors running on ubuntu.
 (all the actual execution takes place on the EC2 centos instance, of course).  Experience is
 that it works reasonably well, but the atom editor sometimes crashes becuse of the slow speed

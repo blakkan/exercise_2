@@ -1,5 +1,8 @@
 # exercise_2 - Storm interfaced with twitter stream
 
+# This is not the Readme.txt file; see that file for full details.
+# This file is just for convenient reference on github 
+
 ## Step 1: Environment and tool setup
 
 The big Problem here was that the lab directions indicated we should name the Streamparse project

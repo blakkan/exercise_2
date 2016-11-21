@@ -1,0 +1,20 @@
+How I made the plot.
+
+First, after running the application, I used a utility script I had written to generate
+a csv file with the 20 most freqent words and their counts
+
+$python ../top20tocsv.py > words.csv
+
+
+As part of my development environment, I mount my EC2 instance's file system on my
+local ubuntu machine, which has R installed.  On that machine I run
+
+$r makeplot.r < words.csv
+
+
+
+This produces Plot.png.
+
+I inclue makeplot.r for reference in the github repo, but it is NOT intended to be
+run in the AMI.
+
