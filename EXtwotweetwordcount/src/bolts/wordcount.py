@@ -15,7 +15,7 @@ class WordCounter(Bolt):
         self.cur.execute('''UPDATE "Tweetwordcount" SET count=count+%s WHERE word = '%s' RETURNING count;''' % (how_much_to_increase, my_word_cleaned) )
         if not self.cur.fetchall():   #python idiom for empty list
            self.cur.execute('''INSERT INTO "Tweetwordcount" VALUES ( '%s', %s );''' % (my_word_cleaned, how_much_to_increase) )
-        self.conn.commit() #This might be expensive in the long run.
+        self.conn.commit() #This might be expensive in the long run. (I.e. for production use look for an alternative)
 
 
     def initialize(self, conf, ctx):
@@ -35,16 +35,9 @@ class WordCounter(Bolt):
 
         self.increase_a_word_count(word)
 
-        # Write codes to increment the word count in Postgres
-        # Use psycopg to interact with Postgres
-        # Database name: Tcount
-        # Table name: Tweetwordcount
-        # you need to create both the database and the table in advance.
-
-
         # Increment the local count
         self.counts[word] += 1
         self.emit([word, self.counts[word]])
 
         # Log the count - just to see the topology running
-        self.log('%s: %d' % (word, self.counts[word]))
+        # self.log('%s: %d' % (word, self.counts[word]))

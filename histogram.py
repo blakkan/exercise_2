@@ -13,8 +13,6 @@ import psycopg2
 
 # Do some very simple command-line argument validation; we need to get two integers
 
-print sys.argv
-
 if len(sys.argv) == 3: #space separated
     low_number_string = sys.argv[1].replace(",", "")
     high_number_string = sys.argv[2]
