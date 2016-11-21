@@ -1,3 +1,4 @@
+#! /usr/bin/python
 #
 # histogram.py
 #
@@ -46,7 +47,7 @@ except:
 
 cur = conn.cursor()
 
-#could use "like" instead of = here, if we wanted to permit sql regex matching...
+#could use "like" instead of = here, if we wanted to permit sql regex matching... but that's beyond what we need.
 sql_command = '''SELECT word, count FROM "Tweetwordcount" WHERE count >= %s AND count <= %s ORDER BY count DESC, word ASC''' % (low_number, high_number)
 
 cur.execute(sql_command)

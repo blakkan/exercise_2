@@ -26,4 +26,34 @@ and execute "sparse run."  There are lots of words, plus "Empty queue exceptions
 A few points in the data- there isn't uniform casing of the words.  There are also some non-word
 patterns making it through the filter (this could be cleaned up later).
 
-## Step 3:
+## Step 3:  Application deployment and running
+
+To initialize, run the script 
+
+Application downcases everything, does a modest trimming out of obvious non-words (but twitter users
+are pretty clever in creating interresting things to parse out.  I chose to leave them for now).
+
+We do permit the apostrphe (single quote) to appear in words.   This has implications in later analysis, since
+SQL commands will need those doubled in order to escape them.
+
+To run the application, cd into EXtwotweetwordcount, then sparse run.
+
+## Step 4: Results presentation
+
+The results are left in the database (username=postgres, database=Tcount, table=Tweetwordcount).
+cd back up to the main project directory and run 
+
+finalresults.py (With or without a single wordcommand line argument.  Remember to double quote any word containing an apostrophe)  
+
+Also run histogram.py (With two integer aguments.)  
+
+Plot.png is also included.   The assignment didn't indicate this needed to be auto-generated, so I chose to 
+generate it outside the EC2 instance, using R running on my local development machine.  (Note
+that I mount the instance file system on my development machine).  To produce the plot, I ran
+my own script top20tocsv.py to produce a csv file, then directed the csv file into R running the makeplot.r
+script.  (The plot is in the minimalist "Tufte" style taught in W203.)  Note that this always writes its output
+to Plot.png.
+
+python top20tocsv.py > words.csv  #on the instance
+r makeplot.r < words.csv          #I run this on my local machine
+

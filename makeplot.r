@@ -6,7 +6,7 @@ input.data.frame = read.csv(stdin())
 count.vector = input.data.frame$Count
 names(count.vector) = input.data.frame$Word
 
-png("plot.png")
+png("Plot.png")
 barplot(count.vector, las=2, main = "Count of 20 most common words in tweets")
 dev.off()
 
